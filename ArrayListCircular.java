@@ -35,6 +35,9 @@ public class ArrayListCircular<E> extends java.util.ArrayList<E>
 
   @Override
   public E get(int index) {
+    if (size()==0)
+      return super.get(0);
+    index = (index % size() + size()) % size();
     return super.get(index%super.size());
   }
   @Override
@@ -63,5 +66,24 @@ public class ArrayListCircular<E> extends java.util.ArrayList<E>
       temp.add(this.get(loc));
     for (int loc = begin; loc<=end; loc++)
       this.set(loc,temp.get(loc-begin));
+  }
+
+
+  public void add(int index, E element)
+  {
+    if (size()==0 || (index != 0 && index % size() == 0))
+      add(element);
+    else
+    {
+      index = (index % size() + size()) % size();
+      super.add(index, element);
+    }
+  }
+
+
+  public E remove(int index)
+  {
+    index = (index % size() + size()) % size();
+    return super.remove(index);
   }
 }

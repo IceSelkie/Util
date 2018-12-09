@@ -26,18 +26,21 @@ public class Prime
    */
   public static boolean isPrime(long n)
   {
-    if (primes.contains(n))
+    if (n < 2)
+      return false;
+    int index = Collections.binarySearch(primes, (Long)n);
+    if (index >= 0)
       return true;
-    if (n==0 || n==1)
+    if (-index - 1 != primes.size())
       return false;
 
-    int sqrt = (int) Math.sqrt(n);
+    int sqrt = (int)Math.sqrt(n);
 
     // Make sure primes list is filled up to the needed point
-    if (highestValue < sqrt+1)
-      findMorePrimesTo(sqrt+1);
+    if (highestValue < sqrt + 1)
+      findMorePrimesTo(sqrt + 1);
     if (highestValue > n)
-      return primes.contains(n);
+      return Collections.binarySearch(primes, (Long)n) >= 0;
 
     // See if it is composite to any previous prime
     boolean prime = true;
@@ -46,7 +49,7 @@ public class Prime
     while (prime && fac < sqrt)
     {
       fac = primes.get(place++);
-      if (n % fac == 0 && fac!=n)
+      if (n % fac == 0 && fac != n)
         prime = false;
     }
 
